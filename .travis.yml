@@ -2,25 +2,39 @@
 os: osx
 osx_image: xcode9.1
 
+# Configure caching
+cache:
+  timeout: 300000 # 5 minutes
+  directories:
+    - $HOME/src
+
 # Define our build stages
 jobs:
   include:
-    - stage: compile
+    - stage: Build
       install:
         - wget "https://github.com/Dids/Build_Clover/raw/master/Build_Clover.command"
         - chmod +x Build_Clover.command
         - ln -sf "${TRAVIS_BUILD_DIR}/BuildCloverConfig.txt" "${HOME}/BuildCloverConfig.txt"
       script:
         - ./Build_Clover.command
-    #- stage: deploy
-    #  script: skip
-    #  deploy: github
-        ## TODO: Implement
+    ## TODO: We still need to detect the current version (eg. v2.4k_r4278)
+    ##       and add it as a tag etc.
+    - stage: GitHub Release
+      script: echo "Deploying to GitHub Releases.."
+      deploy:
+        provider: releases
+        api_key: $GITHUB_OAUTH_TOKEN
+        file_glob: true
+        file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
+        skip_cleanup: true
+        on:
+          tags: true
 
 # Build stage ordering
 stages:
-  - build
-  - name: deploy
+  - Build
+  - name: GitHub Release
     if: branch = master
 
 # Only build on specific branches
@@ -28,3 +42,4 @@ branches:
   only:
     - master
     - development
+    - /^v\d+(\.\d+)+$/
