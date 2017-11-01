@@ -22,7 +22,9 @@ jobs:
         ## TODO: Rewrite this once it's confirmed working
         - git config --global user.email "builds@travis-ci.com"
         - git config --global user.name "Travis CI"
-        - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
+        - export CLOVER_PKG_NAME=$(echo -n $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.pkg)
+        - export CLOVER_PKG_NAME=$(echo -n ${CLOVER_PKG_NAME/.pkg/})
+        - export GIT_TAG=$(echo -n ${CLOVER_PKG_NAME/Clover_/})
         - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
         - git push -q https://$GITHUB_OAUTH_TOKEN@github.com/Dids/clover-builder --tags
     ## TODO: We still need to detect the current version (eg. v2.4k_r4278)
