@@ -4,11 +4,11 @@
 
 A simple project that automatically builds [Clover](https://clover-wiki.zetam.org) as a daily build.
 
-**NOTE:** This is still _very much_ a work in progress, so use at your own discretion.
+**DISCLAIMER:** Since this is a 3rd party build, anything could go wrong, so proceed with caution. That said, it should be fine.
 
 # Releases
 
-Releases are available [here](https://github.com/Dids/clover-build/releases).
+Releases are available [here](https://github.com/Dids/clover-builder/releases).
 
 # License
 
