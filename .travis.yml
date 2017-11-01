@@ -1,1 +1,26 @@
-# Empty
+# Build on macOS with Xcode 9.1
+os: osx
+osx_image: xcode9.1
+
+#before_install:
+#  - 
+
+#install:
+#  - 
+
+before_script:
+  - 'wget "https://github.com/Micky1979/Build_Clover/raw/master/Build_Clover.command"'
+  - 'chmod +x Build_Clover.command'
+
+script:
+  - './Build_Clover.command'
+
+## TODO: Deploy to GitHub Releases
+after_success:
+  - 'echo "WARNING: Deployment not implemented"'
+
+# Only build on specific branches
+branches:
+  only:
+    - master
+    - development
