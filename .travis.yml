@@ -13,7 +13,7 @@ before_script:
   - 'chmod +x Build_Clover.command'
 
 script:
-  - './Build_Clover.command < echo 6'
+  - './Build_Clover.command < <(echo 6)'
 
 ## TODO: Deploy to GitHub Releases
 after_success:
