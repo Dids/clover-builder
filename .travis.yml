@@ -2,22 +2,25 @@
 os: osx
 osx_image: xcode9.1
 
-#before_install:
-#  - 
+# Define our build stages
+jobs:
+  include:
+    - stage: compile
+      install:
+        - wget "https://github.com/Dids/Build_Clover/raw/master/Build_Clover.command"
+        - chmod +x Build_Clover.command
+      script:
+        - ./Build_Clover.command --cfg "${TRAVIS_BUILD_DIR}"
+    - stage: deploy
+      script: skip
+      deploy: github
+        ## TODO: Implement
 
-#install:
-#  - 
-
-before_script:
-  - 'wget "https://github.com/Dids/Build_Clover/raw/master/Build_Clover.command"'
-  - 'chmod +x Build_Clover.command'
-
-script:
-  - './Build_Clover.command'
-
-## TODO: Deploy to GitHub Releases
-after_success:
-  - 'echo "WARNING: Deployment not implemented"'
+# Build stage ordering
+stages:
+  - build
+  - name: deploy
+    if: branch = master
 
 # Only build on specific branches
 branches:
