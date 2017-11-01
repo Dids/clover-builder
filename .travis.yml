@@ -9,11 +9,12 @@ jobs:
       install:
         - wget "https://github.com/Dids/Build_Clover/raw/master/Build_Clover.command"
         - chmod +x Build_Clover.command
+        - ln -sf "${TRAVIS_BUILD_DIR}/BuildCloverConfig.txt" "${HOME}/BuildCloverConfig.txt"
       script:
-        - ./Build_Clover.command --cfg "${TRAVIS_BUILD_DIR}"
-    - stage: deploy
-      script: skip
-      deploy: github
+        - ./Build_Clover.command
+    #- stage: deploy
+    #  script: skip
+    #  deploy: github
         ## TODO: Implement
 
 # Build stage ordering
