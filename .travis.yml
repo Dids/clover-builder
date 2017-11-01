@@ -9,11 +9,11 @@ osx_image: xcode9.1
 #  - 
 
 before_script:
-  - 'wget "https://github.com/Micky1979/Build_Clover/raw/master/Build_Clover.command"'
+  - 'wget "https://github.com/Dids/Build_Clover/raw/master/Build_Clover.command"'
   - 'chmod +x Build_Clover.command'
 
 script:
-  - './Build_Clover.command < <(echo 6)'
+  - './Build_Clover.command'
 
 ## TODO: Deploy to GitHub Releases
 after_success:
