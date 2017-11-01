@@ -18,9 +18,17 @@ jobs:
         - ln -sf "${TRAVIS_BUILD_DIR}/BuildCloverConfig.txt" "${HOME}/BuildCloverConfig.txt"
       script:
         - ./Build_Clover.command
+      after_success:
+        ## TODO: Rewrite this once it's confirmed working
+        - git config --global user.email "builds@travis-ci.com"
+        - git config --global user.name "Travis CI"
+        - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
+        - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+        - git push -q https://$GITHUB_OAUTH_TOKEN@github.com/Dids/clover-builder --tags
     ## TODO: We still need to detect the current version (eg. v2.4k_r4278)
     ##       and add it as a tag etc.
     - stage: GitHub Release
+      #if: branch = master
       script: echo "Deploying to GitHub Releases.."
       deploy:
         provider: releases
@@ -29,7 +37,9 @@ jobs:
         file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
         skip_cleanup: true
         on:
-          tags: true
+          tags: false
+          #branch: master
+          all_branches: true ## TODO: Disable this and enable the two liens above once everything is working
 
 # Build stage ordering
 stages:
@@ -42,4 +52,4 @@ branches:
   only:
     - master
     - development
-    - /^v\d+(\.\d+)+$/
+    #- /^v\d+(\.\d+)+$/
