@@ -10,6 +10,7 @@ export CLOVER_PKG_NAME=$(basename ${CLOVER_PKG_NAME})
 export CLOVER_PKG_NAME=$(echo -n ${CLOVER_PKG_NAME/.pkg/})
 export GIT_TAG=$(echo -n ${CLOVER_PKG_NAME/Clover_/})
 
+git fetch --tags
 REMOTE_TAG=$(git ls-remote --tags 2>/dev/null | grep $GIT_TAG 1>/dev/null)
 git tag -l
 CURRENT_TAG=$(git tag -l $GIT_TAG)
