@@ -19,7 +19,7 @@ jobs:
       script:
         - ./Build_Clover.command
     - stage: GitHub Release
-      #if: branch = master
+      if: branch = master
       script: .scripts/deploy.sh
       deploy:
         provider: releases
@@ -29,7 +29,7 @@ jobs:
         skip_cleanup: true
         on:
           tags: false
-          #branch: master
+          branch: master
 
 # Only build on specific branches
 branches:
