@@ -29,6 +29,7 @@ jobs:
         skip_cleanup: true
         on:
           tags: false
+          pr: false
           branch: master
 
 # Only build on specific branches
