@@ -24,6 +24,8 @@ git fetch --tags
 CURRENT_TAG=$(git tag -l $GIT_TAG)
 if [[ "$CURRENT_TAG" == "$GIT_TAG" ]]; then
     echo "Tag already exists, skipping deployment.."
+    rm -fr "$HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.pkg"
+	exit 0
 else
 	echo "Pushing tag: $GIT_TAG"
     git tag $GIT_TAG -a -m ''
