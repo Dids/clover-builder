@@ -22,9 +22,19 @@ jobs:
     - stage: GitHub Release
       if: branch = master
       script: .scripts/deploy.sh
+      before_deploy:
+        - export CLOVER_PKG_NAME=$(echo -n $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.pkg)
+        - export CLOVER_PKG_NAME=$(basename ${CLOVER_PKG_NAME})
+        - export CLOVER_PKG_NAME=$(echo -n ${CLOVER_PKG_NAME/.pkg/})
+        - export GIT_TAG=$(echo -n ${CLOVER_PKG_NAME/Clover_/})
+        - "export CLOVER_REVISION=$(cd $HOME/src/edk2/Clover && svn info | grep 'Revision: ' | tr -d 'Revision: ')"
+        - export GIT_TAG_MSG=$(svn log svn://svn.code.sf.net/p/cloverefiboot/code --revision $CLOVER_REVISION --xml)
+        - export GIT_TAG_MSG=$(echo $GIT_TAG_MSG | xmllint --xpath "string(//msg)" -)
       deploy:
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN
+        title: v$CLOVER_REVISION
+        body: $GIT_TAG_MSG
         file_glob: true
         file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
         skip_cleanup: true
