@@ -30,8 +30,8 @@ jobs:
         skip_cleanup: true
         on:
           tags: false
-          pr: false
           branch: master
+          condition: $TRAVIS_PULL_REQUEST = false
 
 # Only build on specific branches
 branches:
