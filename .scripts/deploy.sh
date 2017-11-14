@@ -11,7 +11,8 @@ export CLOVER_PKG_NAME=$(echo -n ${CLOVER_PKG_NAME/.pkg/})
 export GIT_TAG=$(echo -n ${CLOVER_PKG_NAME/Clover_/})
 
 # Get the commit message for the tag/revision
-export GIT_TAG_MSG=$(svn log svn://svn.code.sf.net/p/cloverefiboot/code --revision 4300 --xml)
+export CLOVER_REVISION=$(cd $HOME/src/edk2/Clover && svn info | grep 'Revision: ' | tr -d 'Revision: ')
+export GIT_TAG_MSG=$(svn log svn://svn.code.sf.net/p/cloverefiboot/code --revision $CLOVER_REVISION --xml)
 export GIT_TAG_MSG=$(echo $GIT_TAG_MSG | xmllint --xpath "string(//msg)" -)
 
 # Verify that we have a valid tag
