@@ -31,7 +31,8 @@ jobs:
         on:
           tags: false
           branch: master
-          condition: $TRAVIS_PULL_REQUEST = false
+          #condition: $TRAVIS_PULL_REQUEST = false
+          condition: "${TRAVIS_PULL_REQUEST}" = "false"
 
 # Only build on specific branches
 branches:
