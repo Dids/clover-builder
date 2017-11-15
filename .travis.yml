@@ -33,7 +33,7 @@ jobs:
         on:
           tags: false
           branch: master
-          condition: [ -z ${CLOVER_REVISION+x} ]
+          condition: ! -z ${CLOVER_REVISION+x}
 
 # Only build on specific branches
 branches:
