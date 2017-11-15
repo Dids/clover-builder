@@ -25,15 +25,12 @@ jobs:
       deploy:
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN
-        #title: $GIT_TAG
-        #body: $GIT_TAG_MSG
         file_glob: true
         file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
         skip_cleanup: true
         on:
           tags: false
           branch: master
-          condition: ! -z ${CLOVER_REVISION+x}
 
 # Only build on specific branches
 branches:
