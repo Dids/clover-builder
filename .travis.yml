@@ -28,9 +28,8 @@ jobs:
         file_glob: true
         file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
         skip_cleanup: true
-        options:
-          name: $GIT_TAG
-          body: $GIT_TAG_MSG
+        name: "Name: ${GIT_TAG}"
+        body: "Body: ${GIT_TAG_MSG}"
         on:
           tags: false
           branch: master
