@@ -21,13 +21,15 @@ jobs:
         - ./Build_Clover.command
     - stage: GitHub Release
       if: branch = master
-      script: .scripts/deploy.sh
+      script: source .scripts/deploy.sh
       deploy:
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN
         file_glob: true
         file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
         skip_cleanup: true
+        name: $GIT_TAG
+        body: $GIT_TAG_MSG
         on:
           tags: false
           branch: master
