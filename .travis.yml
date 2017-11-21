@@ -4,6 +4,7 @@ osx_image: xcode9.1
 
 # Configure caching
 before_cache:
+  - cp -f $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.* $TRAVIS_BUILD_DIR/
   - rm -rf $HOME/src/edk2/Build
   - rm -rf $HOME/src/edk2/Clover/CloverPackage/sym
   - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverPrefpane/build
@@ -27,7 +28,7 @@ script:
   - .scripts/build.sh
 
 # Prepare the deployment
-before_deploy:
+after_success:
   - source .scripts/deploy.sh
 
 # Deploy to GitHub Releases
@@ -35,7 +36,7 @@ deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
   file_glob: true
-  file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
+  file: $TRAVIS_BUILD_DIR/Clover_*.*
   skip_cleanup: true
   name: "${GIT_TAG}"
   body: "${GIT_TAG_MSG}"

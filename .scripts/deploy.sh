@@ -5,7 +5,7 @@ git config --global user.email "builds@travis-ci.com"
 git config --global user.name "Travis CI"
 
 # Figure out the tag name
-export CLOVER_PKG_NAME=$(echo -n $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.pkg)
+export CLOVER_PKG_NAME=$(echo -n ${TRAVIS_BUILD_DIR}/Clover_*.pkg)
 export CLOVER_PKG_NAME=$(basename ${CLOVER_PKG_NAME})
 export CLOVER_PKG_NAME=$(echo -n ${CLOVER_PKG_NAME/.pkg/})
 export GIT_TAG=$(echo -n ${CLOVER_PKG_NAME/Clover_/})
