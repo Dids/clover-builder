@@ -15,11 +15,12 @@ perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' drivers64UE
 
 # Add missing descriptions
 cd ${HOME}/src/edk2/Clover/CloverPackage/package/Resources/templates
+echo '"OsxAptioFix2Drv-64_description" = "64bit driver to fix Memory problems on UEFI firmware such as AMI Aptio.";' >> Localizable.strings
 echo '"HFSPlus_description" = "Adds support for HFS+ partitions.";' >> Localizable.strings
 echo '"Fat-64_description" = "Adds support for exFAT (FAT64) partitions.";' >> Localizable.strings
 echo '"NTFS_description" = "Adds support for NTFS partitions.";' >> Localizable.strings
 echo '"apfs_description" = "Adds support for APFS partitions.";' >> Localizable.strings
-echo '"apfs_patched_description" = "Adds support for APFS partitions.\nPatched version which removes verbose logging on startup.";' >> Localizable.strings
+echo '"apfs_patched_description" = "Adds support for APFS partitions.\nPatched version which removes verbose logging on startup.\n\nWARNING: Do NOT enable multiple apfs.efi drivers!";' >> Localizable.strings
 
 # Recreate the package
 cd "${HOME}/src/edk2/Clover/CloverPackage"
