@@ -3,6 +3,11 @@ os: osx
 osx_image: xcode9.1
 
 # Configure caching
+before_cache:
+  - rm -rf $HOME/src/edk2/Build
+  - rm -rf $HOME/src/edk2/Clover/CloverPackage/sym
+  - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverPrefpane/build
+  - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverUpdater/build
 cache:
   timeout: 300000 # 5 minutes
   directories:
@@ -17,15 +22,15 @@ install:
   - cp -f "${TRAVIS_BUILD_DIR}/BuildCloverConfig.txt" "${HOME}/BuildCloverConfig.txt"
   - sed -i -e "s/.*SUGGESTED_CLOVER_REV.*/SUGGESTED_CLOVER_REV=${CLOVER_REVISION}/" "${HOME}/BuildCloverConfig.txt"
 
-# Build
+# Build everything
 script:
   - .scripts/build.sh
 
-# Prepare to deploy (setup tags etc.)
+# Prepare the deployment
 before_deploy:
   - source .scripts/deploy.sh
 
-# Deploy
+# Deploy to GitHub Releases
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
