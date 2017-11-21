@@ -4,6 +4,15 @@
 git config --global user.email "builds@travis-ci.com"
 git config --global user.name "Travis CI"
 
+# Check if this is a real deployment
+export CLOVER_DEPLOY=false
+if [[ ! -z "${CLOVER_REVISION// }" ]]; then
+	export CLOVER_DEPLOY=true
+else
+	echo "Not a valid release build, skipping deployment.."
+	exit 0
+fi
+
 # Figure out the tag name
 export CLOVER_PKG_NAME=$(echo -n ${TRAVIS_BUILD_DIR}/Clover_*.pkg)
 export CLOVER_PKG_NAME=$(basename ${CLOVER_PKG_NAME})
@@ -16,7 +25,7 @@ export CLOVER_COMMIT_XML=$(svn log svn://svn.code.sf.net/p/cloverefiboot/code --
 export CLOVER_COMMIT_MSG=$(echo $CLOVER_COMMIT_XML | xmllint --xpath "string(//msg)" -)
 export CLOVER_COMMIT_AUTHOR=$(echo $CLOVER_COMMIT_XML | xmllint --xpath "string(//author)" -)
 export CLOVER_COMMIT_DATE=$(echo $CLOVER_COMMIT_XML | xmllint --xpath "string(//date)" -)
-export GIT_TAG_MSG="${CLOVER_COMMIT_MSG}\n- ${CLOVER_COMMIT_AUTHOR}"
+export GIT_TAG_MSG=$(printf '%s\n- %s' "$CLOVER_COMMIT_MSG" "$CLOVER_COMMIT_AUTHOR")
 
 # Verify that we have a valid tag
 if [[ -z "${GIT_TAG// }" || "${GIT_TAG// }" != v* ]]; then
@@ -34,7 +43,6 @@ if [[ "$CURRENT_TAG" == "$GIT_TAG" ]]; then
 	exit 0
 else
 	echo "Pushing tag '$GIT_TAG'"
-    git tag $GIT_TAG -a -m "${GIT_TAG_MSG}"
+    git tag $GIT_TAG -a -m "${CLOVER_COMMIT_MSG}" -m "- ${CLOVER_COMMIT_AUTHOR}"
     git push -q https://$GITHUB_OAUTH_TOKEN@github.com/Dids/clover-builder --tags
-    export CLOVER_DEPLOY=true
 fi
