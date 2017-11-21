@@ -28,7 +28,7 @@ script:
   - .scripts/build.sh
 
 # Prepare the deployment
-before_deploy:
+after_success:
   - source .scripts/deploy.sh
 
 # Deploy to GitHub Releases
