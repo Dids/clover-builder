@@ -3,36 +3,47 @@ os: osx
 osx_image: xcode9.1
 
 # Configure caching
+before_cache:
+  - rm -rf $HOME/src/edk2/Build
+  - rm -rf $HOME/src/edk2/Clover/CloverPackage/sym
+  - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverPrefpane/build
+  - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverUpdater/build
 cache:
   timeout: 300000 # 5 minutes
   directories:
     - $HOME/src
 
-# Define our build stages
-jobs:
-  include:
-    - stage: Build
-      install:
-        - wget "https://github.com/Dids/Build_Clover/raw/master/Build_Clover.command"
-        - chmod +x Build_Clover.command
-        - cp -f "${TRAVIS_BUILD_DIR}/BuildCloverConfig.txt" "${HOME}/BuildCloverConfig.txt"
-        - sed -i -e "s/.*SUGGESTED_CLOVER_REV.*/SUGGESTED_CLOVER_REV=${CLOVER_REVISION}/" "${HOME}/BuildCloverConfig.txt"
-      script:
-        - ./Build_Clover.command
-    - stage: GitHub Release
-      if: branch = master
-      script: source .scripts/deploy.sh
-      deploy:
-        provider: releases
-        api_key: $GITHUB_OAUTH_TOKEN
-        file_glob: true
-        file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
-        skip_cleanup: true
-        name: "${GIT_TAG}"
-        body: "${GIT_TAG_MSG}"
-        on:
-          tags: false
-          branch: master
+# Install dependencies
+install:
+  ## TODO: Switch back to master one the non-interactive features are in
+  ## NOTE: Be sure to also update BuildCloverConfig.txt to use the master branch
+  - wget "https://github.com/Micky1979/Build_Clover/raw/fab05ab353d1c56e1afa0dc00cf0d5d28ecbc3c8/Build_Clover.command"
+  - chmod +x Build_Clover.command
+  - cp -f "${TRAVIS_BUILD_DIR}/BuildCloverConfig.txt" "${HOME}/BuildCloverConfig.txt"
+  - sed -i -e "s/.*SUGGESTED_CLOVER_REV.*/SUGGESTED_CLOVER_REV=${CLOVER_REVISION}/" "${HOME}/BuildCloverConfig.txt"
+
+# Build everything
+script:
+  - .scripts/build.sh
+
+# Prepare the deployment
+before_deploy:
+  - source .scripts/deploy.sh
+
+# Deploy to GitHub Releases
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file_glob: true
+  file: $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*
+  skip_cleanup: true
+  name: "${GIT_TAG}"
+  body: "${GIT_TAG_MSG}"
+  on:
+    tags: false
+    branch: master
+    condition: "$CLOVER_DEPLOY = true"
+    repo: Dids/clover-builder
 
 # Only build on specific branches
 branches:
