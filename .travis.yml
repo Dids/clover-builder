@@ -39,7 +39,7 @@ deploy:
   file: $TRAVIS_BUILD_DIR/Clover_*.*
   skip_cleanup: true
   name: "${GIT_TAG}"
-  body: "${CLOVER_COMMIT_MSG} -${CLOVER_COMMIT_AUTHOR}"
+  body: "${CLOVER_COMMIT_MSG} - ${CLOVER_COMMIT_AUTHOR}"
   on:
     tags: false
     branch: master
