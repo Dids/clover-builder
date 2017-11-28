@@ -5,6 +5,7 @@ osx_image: xcode9.1
 # Configure caching
 before_cache:
   - cp -f $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.* $TRAVIS_BUILD_DIR/
+  - rm -rf $TRAVIS_BUILD_DIR/*.zip
   - rm -rf $HOME/src/edk2/Build
   - rm -rf $HOME/src/edk2/Clover/CloverPackage/sym
   - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverPrefpane/build
