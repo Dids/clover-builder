@@ -19,7 +19,7 @@ cache:
 install:
   ## TODO: Switch back to master one the non-interactive features are in
   ## NOTE: Be sure to also update BuildCloverConfig.txt to use the master branch
-  - wget "https://github.com/Micky1979/Build_Clover/raw/fab05ab353d1c56e1afa0dc00cf0d5d28ecbc3c8/Build_Clover.command"
+  - wget "https://github.com/Micky1979/Build_Clover/raw/master/Build_Clover.command"
   - chmod +x Build_Clover.command
   - cp -f "${TRAVIS_BUILD_DIR}/BuildCloverConfig.txt" "${HOME}/BuildCloverConfig.txt"
   - sed -i -e "s/.*SUGGESTED_CLOVER_REV.*/SUGGESTED_CLOVER_REV=${CLOVER_REVISION}/" "${HOME}/BuildCloverConfig.txt"
