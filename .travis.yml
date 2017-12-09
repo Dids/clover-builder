@@ -2,18 +2,19 @@
 os: osx
 osx_image: xcode9.1
 
+## NOTE: Caching is disabled for now, to avoid build issues with edk2 updates etc.
 # Configure caching
-before_cache:
-  - cp -f $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.* $TRAVIS_BUILD_DIR/
-  - rm -rf $TRAVIS_BUILD_DIR/*.zip
-  - rm -rf $HOME/src/edk2/Build
-  - rm -rf $HOME/src/edk2/Clover/CloverPackage/sym
-  - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverPrefpane/build
-  - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverUpdater/build
-cache:
-  timeout: 300000 # 5 minutes
-  directories:
-    - $HOME/src
+#before_cache:
+#  - cp -f $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.* $TRAVIS_BUILD_DIR/
+#  - rm -rf $TRAVIS_BUILD_DIR/*.zip
+#  - rm -rf $HOME/src/edk2/Build
+#  - rm -rf $HOME/src/edk2/Clover/CloverPackage/sym
+#  - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverPrefpane/build
+#  - rm -rf $HOME/src/edk2/Clover/CloverPackage/CloverUpdater/build
+#cache:
+#  timeout: 300000 # 5 minutes
+#  directories:
+#    - $HOME/src
 
 # Install dependencies
 install:
