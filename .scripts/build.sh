@@ -8,9 +8,6 @@ set -o pipefail
 
 # Create a patched apfs.efi
 cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
-wget "https://github.com/Dids/Build_Clover/raw/work/Files/apfs.efi" -O "apfs_new.efi"
-cp -f apfs_new.efi drivers64/apfs-64.efi
-cp -f apfs_new.efi drivers64UEFI/apfs.efi
 cp -f drivers64/apfs-64.efi drivers64/apfs_patched-64.efi
 cp -f drivers64UEFI/apfs.efi drivers64UEFI/apfs_patched.efi
 perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' drivers64/apfs_patched-64.efi
