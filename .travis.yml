@@ -28,6 +28,7 @@ install:
 # Build everything
 script:
   - .scripts/build.sh
+  - cp -f $HOME/src/edk2/Clover/CloverPackage/sym/Clover_*.* $TRAVIS_BUILD_DIR/
 
 # Prepare the deployment
 after_success:
