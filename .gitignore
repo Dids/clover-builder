@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/linux,macos,windows,visualstudio,visualstudiocode
 
+# Clover specific
+Build_Clover.command
+
 ### Linux ###
 *~
 
