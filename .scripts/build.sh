@@ -5,15 +5,15 @@ set -e
 set -o pipefail
 
 # Enable debugging
-set -x
+#set -x
+
+# Build Clover and create the initial package
+"${TRAVIS_BUILD_DIR}/Build_Clover.command"
 
 # Append myself to the credits
 CREDITS_ORIGINAL="Chameleon team, crazybirdy, JrCs."
 CREDITS_MODIFIED="Chameleon team, crazybirdy, JrCs, Dids."
 sed -i '' -e "s/.*${CREDITS_ORIGINAL}.*/${CREDITS_MODIFIED}/" "${HOME}/src/edk2/Clover/CloverPackage/CREDITS"
-
-# Build Clover and create the initial package
-"${TRAVIS_BUILD_DIR}/Build_Clover.command"
 
 ## TODO: This step can be removed if/when Build_Clover
 ##       or Clover itself gets official AptioFix support
