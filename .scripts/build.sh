@@ -40,7 +40,7 @@ build -a X64 -b RELEASE -t XCODE8 -p AptioFixPkg/AptioFixPkg.dsc
 
 # Install the AptioFix (U)EFI drivers
 cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
-cp -f ${HOME}/src/edk2/Build/AptioFixPkg/RELEASE_XCODE5/X64/*.efi drivers64UEFI/
+cp -f ${HOME}/src/edk2/Build/AptioFixPkg/RELEASE_XCODE8/X64/*.efi drivers64UEFI/
 
 # Create patched APFS EFI drivers
 cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
