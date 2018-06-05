@@ -7,6 +7,9 @@ set -o pipefail
 # Enable debugging
 #set -x
 
+# Use our own fork for additional drivers (ours are usually much more up to date)
+sed -i '' -e "s/Micky1979\/Build_Clover\/raw\/work\/Files/Dids\/Build_Clover\/raw\/work\/Files/g" "${TRAVIS_BUILD_DIR}/Build_Clover.command"
+
 # Build Clover and create the initial package
 "${TRAVIS_BUILD_DIR}/Build_Clover.command"
 
