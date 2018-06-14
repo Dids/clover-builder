@@ -18,8 +18,19 @@ CREDITS_ORIGINAL="Chameleon team, crazybirdy, JrCs."
 CREDITS_MODIFIED="Chameleon team, crazybirdy, JrCs, Dids."
 sed -i '' -e "s/.*${CREDITS_ORIGINAL}.*/${CREDITS_MODIFIED}/" "${HOME}/src/edk2/Clover/CloverPackage/CREDITS"
 
-# Create patched APFS EFI drivers
+# Switch to the EFI driver folder
 cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
+
+# Integrate the ApfsSupportPkg, which replaces the need for a separate apfs.efi file
+APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
+curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
+  unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
+  cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
+  cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64UEFI/ && \
+  rm -fr /tmp/ApfsSupportPkg
+
+## TODO: Remove this completely and disable APFS option on Build_Clover?
+# Create patched APFS EFI drivers
 cp -f drivers64/apfs-64.efi drivers64/apfs_patched-64.efi
 cp -f drivers64UEFI/apfs.efi drivers64UEFI/apfs_patched.efi
 perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' drivers64/apfs_patched-64.efi
@@ -31,8 +42,9 @@ echo '"OsxAptioFix2Drv-64_description" = "64bit driver to fix Memory problems on
 echo '"HFSPlus_description" = "Adds support for HFS+ partitions.";' >> Localizable.strings
 echo '"Fat-64_description" = "Adds support for exFAT (FAT64) partitions.";' >> Localizable.strings
 echo '"NTFS_description" = "Adds support for NTFS partitions.";' >> Localizable.strings
-echo '"apfs_description" = "Adds support for APFS partitions.";' >> Localizable.strings
-echo '"apfs_patched_description" = "Adds support for APFS partitions.\nPatched version which removes verbose logging on startup.\n\nWARNING: Do NOT enable multiple apfs.efi drivers!";' >> Localizable.strings
+echo '"apfs_description" = "OBSOLETE: Use APFSDriverLoader instead!\n\nAdds support for APFS partitions.";' >> Localizable.strings
+echo '"apfs_patched_description" = "OBSOLETE: Use APFSDriverLoader instead!\n\nAdds support for APFS partitions.\nPatched version which removes verbose logging on startup.\n\nWARNING: Do NOT enable multiple apfs.efi drivers!";' >> Localizable.strings
+echo '"APFSDriverLoader_description" = "Loads apfs.efi from ApfsContainer located on block device.\n\nWARNING: This replaces the separate apfs.efi driver.";' >> Localizable.strings
 #echo '"AptioMemoryFix_description" = "Fork of the original OsxAptioFix2 driver with a cleaner (yet still terrible) codebase and improved stability and functionality.\n\nWARNING: Do NOT use in combination with older AptioFix drivers.\nThis is an experimental driver by vit9696 (https://github.com/vit9696/AptioFixPkg).";' >> Localizable.strings
 echo '"AptioInputFix_description" = "Reference driver to shim AMI APTIO proprietary mouse & keyboard protocols for File Vault 2 GUI input support.\n\nWARNING: Do NOT use in combination with older AptioFix drivers.\nThis is an experimental driver by vit9696 (https://github.com/vit9696/AptioFixPkg).";' >> Localizable.strings
 echo '"OsxAptioFix3Drv-64_description" = "64bit driver to fix Memory problems on UEFI firmware such as AMI Aptio.";' >> Localizable.strings
