@@ -23,11 +23,11 @@ cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
 
 ## FIXME: This is still broken when running in CI
 # Integrate the ApfsSupportPkg, which replaces the need for a separate apfs.efi file
-APFSSUPPORTPKG_URL=$(curl -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest)
+APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest)
 APFSSUPPORTPKG_URL=$(echo $APFSSUPPORTPKG_URL | grep "browser_download_url.*zip")
 APFSSUPPORTPKG_URL=$(echo $APFSSUPPORTPKG_URL | cut -d '"' -f 4)
-#APFSSUPPORTPKG_URL=$(curl -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
-curl -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
+#APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
+curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
   unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
   cp -f /tmp/ApfsSupportPkg/RELEASE/ApfsSupportPkg.efi drivers64/ApfsSupportPkg-64.efi && \
   cp -f /tmp/ApfsSupportPkg/RELEASE/ApfsSupportPkg.efi drivers64UEFI/ && \
