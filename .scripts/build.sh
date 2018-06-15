@@ -12,30 +12,15 @@ sed -i '' -e "s/Micky1979\/Build_Clover\/raw\/work\/Files/Dids\/Build_Clover\/ra
 
 ## TODO: This is a temporary hack to fix the mtoc compatibility issues in Build_Clover/Clover/AptioFixPkg
 MTOC_URL=https://github.com/acidanthera/ApfsSupportPkg/raw/master/External/mtoc-mac64.zip
-#MTOC_PATH="${HOME}/src/edk2/Clover/BuildTools/usr/local/bin"
-MTOC_PATH2="${HOME}/src/opt/local/bin"
-#mkdir -p "${MTOC_PATH}"
-mkdir -p "${MTOC_PATH2}"
-#curl -sSLk $MTOC_URL > "${MTOC_PATH}/mtoc.NEW.zip"
+MTOC_PATH="${HOME}/src/opt/local/bin"
+mkdir -p "${MTOC_PATH}"
 curl -sSLk $MTOC_URL > "/tmp/mtoc.NEW.zip"
-#unzip -qo "${MTOC_PATH}/mtoc.NEW.zip" -d "${MTOC_PATH}/"
-unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH2}/"
-#cp -f "${MTOC_PATH2}/mtoc.NEW" "${MTOC_PATH2}/mtoc"
-chmod +x "${MTOC_PATH2}/mtoc.NEW"
-#chmod +x "${MTOC_PATH2}/mtoc"
-#ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH}/mtoc"
-#ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH2}/mtoc.NEW"
-#ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH2}/mtoc"
-#echo ""
-#echo "${MTOC_PATH}:"
-#ls "${MTOC_PATH}"
+unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH}/"
+chmod +x "${MTOC_PATH}/mtoc.NEW"
 echo ""
-echo "${MTOC_PATH2}:"
-ls "${MTOC_PATH2}"
+echo "${MTOC_PATH}:"
+ls "${MTOC_PATH}"
 echo ""
-
-## FIXME: Remove this, it's just to see if the file can be executed or not
-#$MTOC_PATH2/mtoc.NEW
 
 # Build Clover and create the initial package
 "${TRAVIS_BUILD_DIR}/Build_Clover.command"
@@ -56,7 +41,7 @@ curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupp
   cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64UEFI/ && \
   rm -fr /tmp/ApfsSupportPkg
 
-## TODO: Remove this completely and disable APFS option on Build_Clover?
+## TODO: Remove this completely and disable APFS building in Build_Clover?
 # Create patched APFS EFI drivers
 #cp -f drivers64/apfs-64.efi drivers64/apfs_patched-64.efi
 cp -f drivers64UEFI/apfs.efi drivers64UEFI/apfs_patched.efi
