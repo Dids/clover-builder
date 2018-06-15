@@ -19,7 +19,7 @@ unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH}/"
 chmod +x "${MTOC_PATH}/mtoc.NEW"
 
 # Build Clover and create the initial package
-"${TRAVIS_BUILD_DIR}/Build_Clover.command"
+bash -x "${TRAVIS_BUILD_DIR}/Build_Clover.command"
 
 # Append myself to the credits
 CREDITS_ORIGINAL="Chameleon team, crazybirdy, JrCs."
