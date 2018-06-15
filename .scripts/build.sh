@@ -17,10 +17,6 @@ mkdir -p "${MTOC_PATH}"
 curl -sSLk $MTOC_URL > "/tmp/mtoc.NEW.zip"
 unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH}/"
 chmod +x "${MTOC_PATH}/mtoc.NEW"
-echo ""
-echo "${MTOC_PATH}:"
-ls "${MTOC_PATH}"
-echo ""
 
 # Build Clover and create the initial package
 "${TRAVIS_BUILD_DIR}/Build_Clover.command"
@@ -43,6 +39,8 @@ curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupp
 
 ## TODO: Remove this completely and disable APFS building in Build_Clover?
 # Create patched APFS EFI drivers
+pwd
+ls drivers64/
 cp -f drivers64/apfs-64.efi drivers64/apfs_patched-64.efi
 cp -f drivers64UEFI/apfs.efi drivers64UEFI/apfs_patched.efi
 perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' drivers64/apfs_patched-64.efi
