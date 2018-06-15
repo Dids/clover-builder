@@ -12,22 +12,28 @@ sed -i '' -e "s/Micky1979\/Build_Clover\/raw\/work\/Files/Dids\/Build_Clover\/ra
 
 ## TODO: This is a temporary hack to fix the mtoc compatibility issues in Build_Clover/Clover/AptioFixPkg
 MTOC_URL=https://github.com/acidanthera/ApfsSupportPkg/raw/master/External/mtoc-mac64.zip
-MTOC_PATH="${HOME}/src/edk2/Clover/BuildTools/usr/local/bin"
+#MTOC_PATH="${HOME}/src/edk2/Clover/BuildTools/usr/local/bin"
 MTOC_PATH2="${HOME}/src/opt/local/bin"
-mkdir -p "${MTOC_PATH}"
+#mkdir -p "${MTOC_PATH}"
 mkdir -p "${MTOC_PATH2}"
-curl -sSLk $MTOC_URL > "${MTOC_PATH}/mtoc.NEW.zip"
-unzip -qo "${MTOC_PATH}/mtoc.NEW.zip" -d "${MTOC_PATH}/"
-ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH}/mtoc"
-ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH2}/mtoc.NEW"
-ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH2}/mtoc"
+#curl -sSLk $MTOC_URL > "${MTOC_PATH}/mtoc.NEW.zip"
+curl -sSLk $MTOC_URL > "/tmp/mtoc.NEW.zip"
+#unzip -qo "${MTOC_PATH}/mtoc.NEW.zip" -d "${MTOC_PATH}/"
+unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH2}/"
+chmod +x "${MTOC_PATH2}/mtoc.NEW"
+#ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH}/mtoc"
+#ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH2}/mtoc.NEW"
+#ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH2}/mtoc"
+#echo ""
+#echo "${MTOC_PATH}:"
+#ls "${MTOC_PATH}"
 echo ""
-echo "${MTOC_PATH}:"
-ls "${MTOC_PATH}"
-echo ""
-echo "${MTOC_PATH}:"
+echo "${MTOC_PATH2}:"
 ls "${MTOC_PATH2}"
 echo ""
+
+## FIXME: Remove this, it's just to see if the file can be executed or not
+$MTOC_PATH2/mtoc.NEW
 
 # Build Clover and create the initial package
 "${TRAVIS_BUILD_DIR}/Build_Clover.command"
