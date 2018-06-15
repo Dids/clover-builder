@@ -20,7 +20,9 @@ mkdir -p "${MTOC_PATH2}"
 curl -sSLk $MTOC_URL > "/tmp/mtoc.NEW.zip"
 #unzip -qo "${MTOC_PATH}/mtoc.NEW.zip" -d "${MTOC_PATH}/"
 unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH2}/"
+cp -f "${MTOC_PATH2}/mtoc.NEW" "${MTOC_PATH2}/mtoc"
 chmod +x "${MTOC_PATH2}/mtoc.NEW"
+chmod +x "${MTOC_PATH2}/mtoc"
 #ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH}/mtoc"
 #ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH2}/mtoc.NEW"
 #ln -sf "${MTOC_PATH}/mtoc.NEW" "${MTOC_PATH2}/mtoc"
@@ -33,7 +35,7 @@ ls "${MTOC_PATH2}"
 echo ""
 
 ## FIXME: Remove this, it's just to see if the file can be executed or not
-$MTOC_PATH2/mtoc.NEW
+#$MTOC_PATH2/mtoc.NEW
 
 # Build Clover and create the initial package
 "${TRAVIS_BUILD_DIR}/Build_Clover.command"
