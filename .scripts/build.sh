@@ -33,13 +33,14 @@ cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
 APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
 curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
   unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
-  cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
+  #cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
   cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64UEFI/ && \
   rm -fr /tmp/ApfsSupportPkg
 
 ## TODO: Remove this completely and disable APFS building in Build_Clover?
 # Create patched APFS EFI drivers
 ls drivers64/
+ls drivers64UEFI/
 #cp -f drivers64/apfs-64.efi drivers64/apfs_patched-64.efi
 #cp -f drivers64UEFI/apfs.efi drivers64UEFI/apfs_patched.efi
 #perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' drivers64/apfs_patched-64.efi
