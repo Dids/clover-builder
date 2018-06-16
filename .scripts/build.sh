@@ -5,18 +5,18 @@ set -e
 set -o pipefail
 
 # Enable debugging
-set -x
+#set -x
 
 # Use our own fork for additional drivers (ours are usually much more up to date)
 sed -i '' -e "s/Micky1979\/Build_Clover\/raw\/work\/Files/Dids\/Build_Clover\/raw\/work\/Files/g" "${TRAVIS_BUILD_DIR}/Build_Clover.command"
 
 ## TODO: This is a temporary hack to fix the mtoc compatibility issues in Build_Clover/Clover/AptioFixPkg
-MTOC_URL=https://github.com/acidanthera/ApfsSupportPkg/raw/master/External/mtoc-mac64.zip
-MTOC_PATH="${HOME}/src/opt/local/bin"
-mkdir -p "${MTOC_PATH}"
-curl -sSLk $MTOC_URL > "/tmp/mtoc.NEW.zip"
-unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH}/"
-chmod +x "${MTOC_PATH}/mtoc.NEW"
+#MTOC_URL=https://github.com/acidanthera/ApfsSupportPkg/raw/master/External/mtoc-mac64.zip
+#MTOC_PATH="${HOME}/src/opt/local/bin"
+#mkdir -p "${MTOC_PATH}"
+#curl -sSLk $MTOC_URL > "/tmp/mtoc.NEW.zip"
+#unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH}/"
+#chmod +x "${MTOC_PATH}/mtoc.NEW"
 
 # Build Clover and create the initial package
 bash -x "${TRAVIS_BUILD_DIR}/Build_Clover.command"
@@ -30,12 +30,12 @@ sed -i '' -e "s/.*${CREDITS_ORIGINAL}.*/${CREDITS_MODIFIED}/" "${HOME}/src/edk2/
 cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
 
 # Integrate the ApfsSupportPkg, which replaces the need for a separate apfs.efi file
-APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
-curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
-  unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
-  #cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
-  cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64UEFI/ && \
-  rm -fr /tmp/ApfsSupportPkg
+#APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
+#curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
+#  unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
+#  #cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
+#  cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64UEFI/ && \
+#  rm -fr /tmp/ApfsSupportPkg
 
 ## TODO: Remove this completely and disable APFS building in Build_Clover?
 # Create patched APFS EFI drivers
