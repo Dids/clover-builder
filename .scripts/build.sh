@@ -5,7 +5,7 @@ set -e
 set -o pipefail
 
 # Enable debugging
-#set -x
+set -x
 
 # Use our own fork for additional drivers (ours are usually much more up to date)
 sed -i '' -e "s/Micky1979\/Build_Clover\/raw\/work\/Files/Dids\/Build_Clover\/raw\/work\/Files/g" "${TRAVIS_BUILD_DIR}/Build_Clover.command"
@@ -30,12 +30,31 @@ sed -i '' -e "s/.*${CREDITS_ORIGINAL}.*/${CREDITS_MODIFIED}/" "${HOME}/src/edk2/
 cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
 
 # Integrate the ApfsSupportPkg, which replaces the need for a separate apfs.efi file
-#APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
-#curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
-#  unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
-#  #cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
-#  cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64UEFI/ && \
-#  rm -fr /tmp/ApfsSupportPkg
+if [ ! -e "$(pwd)/drivers64UEFI/APFSDriverLoader.efi" ]; then
+  echo "Adding ApfsSupportPkg.."
+  APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
+  curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
+    unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
+    cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
+    cp -f /tmp/ApfsSupportPkg/RELEASE/*.efi drivers64UEFI/ && \
+    rm -fr /tmp/ApfsSupportPkg
+else
+  echo "Skipping ApfsSupportPkg, already exists.."
+fi
+
+# Integrate the AptioFixPkg, which fixes issues with NVRAM
+if [ ! -e "$(pwd)/drivers64UEFI/AptioMemoryFix.efi" ]; then
+  echo "Adding AptioFixPkg.."
+  APTIOFIXTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/AptioFixPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
+  curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APTIOFIXTPKG_URL > /tmp/AptioFixPkg.zip && \
+    unzip /tmp/AptioFixPkg.zip -d /tmp/AptioFixPkg && \
+    cp -f /tmp/AptioFixPkg/Drivers/AptioInputFix.efi drivers64/AptioInputFix-64.efi && \
+    cp -f /tmp/AptioFixPkg/Drivers/AptioMemoryFix.efi drivers64/AptioMemoryFix-64.efi && \
+    cp -f /tmp/AptioFixPkg/RELEASE/*.efi drivers64UEFI/ && \
+    rm -fr /tmp/AptioFixPkg
+else
+  echo "Skipping AptioFixPkg, already exists.."
+fi
 
 ## TODO: Remove this completely and disable APFS building in Build_Clover?
 # Create patched APFS EFI drivers
