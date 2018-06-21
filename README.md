@@ -1,4 +1,6 @@
-# Automated Clover Builds
+# Clover Builder (Automated Clover Builds)
+
+[![Build Status](https://www.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://www.bitrise.io/app/d99a8cc679de9944)
 
 ```text
        (       )            (                 (   (   (         (
@@ -16,8 +18,6 @@
                    |___|_  |  |____/|_|___|___|
                        |___|
 ```
-
-[![Build Status](https://www.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://www.bitrise.io/app/d99a8cc679de9944)
 
 A project that provides automated builds for every [Clover](https://clover-wiki.zetam.org) revision.
 
