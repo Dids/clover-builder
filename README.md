@@ -1,5 +1,6 @@
 # Automated Clover Builds
 
+```text
        (       )            (                 (   (   (         (
    (   )\ ) ( /(            )\ )     (        )\ ))\ ))\ )      )\ )
    )\ (()/( )\())(   (  (  (()/(   ( )\    ( (()/(()/(()/(  (  (()/(
@@ -14,6 +15,7 @@
                    | . | | |  |  |  | | . |_ -|
                    |___|_  |  |____/|_|___|___|
                        |___|
+```
 
 [![Build Status](https://www.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://www.bitrise.io/app/d99a8cc679de9944)
 
