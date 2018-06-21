@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Setup git user
 git config --global user.email "builds@bitrise.io"
