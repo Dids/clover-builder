@@ -1,5 +1,20 @@
 # Automated Clover Builds
 
+       (       )            (                 (   (   (         (
+   (   )\ ) ( /(            )\ )     (        )\ ))\ ))\ )      )\ )
+   )\ (()/( )\())(   (  (  (()/(   ( )\    ( (()/(()/(()/(  (  (()/(
+ (((_) /(_)|(_)\ )\  )\ )\  /(_))  )((_)   )\ /(_))(_))(_)) )\  /(_))
+ )\___(_))   ((_|(_)((_|(_)(_))   ((_)_ _ ((_|_))(_))(_))_ ((_)(_))
+((/ __| |   / _ \ \ / /| __| _ \   | _ ) | | |_ _| |  |   \| __| _ \
+ | (__| |__| (_) \ V / | _||   /   | _ \ |_| || || |__| |) | _||   /
+  \___|____|\___/ \_/  |___|_|_\   |___/\___/|___|____|___/|___|_|_\
+
+                   _          ____  _   _
+                   | |_ _ _   |    \|_|_| |___
+                   | . | | |  |  |  | | . |_ -|
+                   |___|_  |  |____/|_|___|___|
+                       |___|
+
 [![Build Status](https://www.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://www.bitrise.io/app/d99a8cc679de9944)
 
 A project that provides automated builds for every [Clover](https://clover-wiki.zetam.org) revision.
