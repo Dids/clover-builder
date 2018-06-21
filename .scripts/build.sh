@@ -13,8 +13,9 @@ echo "" > ${LOG_PATH} 2>&1
 # Simple function for generating at timestamp
 function timestamp ()
 {
-  echo -ne "\033[33m$(date +%FT%T%Z)\033[0m ";
+  echo -ne "\033[33m$(date +%FT%T%Z)\033[39m ";
   $@
+  echo -ne "\033[0m"
 }
 
 # Handle error signals
@@ -182,4 +183,4 @@ cd "${CLOVER_PATH}/CloverPackage"
 END_TIME=$(date +%s)
 EXEC_TIME=$(( $END_TIME - $START_TIME ))
 EXEC_RESULT=$(expr ${EXEC_TIME:-0} / 60)
-timestamp echo -e "\033[92mFinished in $EXEC_RESULT minute(s)!\033[0m"
+timestamp echo -e "\033[32mFinished in $EXEC_RESULT minute(s)!\033[0m"
