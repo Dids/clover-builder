@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Setup git user
-git config --global user.email "builds@travis-ci.com"
-git config --global user.name "Travis CI"
+git config --global user.email "builds@bitrise.io"
+git config --global user.name "Bitrise CI"
 
 # Check if this is a real deployment
 export CLOVER_DEPLOY=false
@@ -14,13 +14,13 @@ else
 fi
 
 # Figure out the tag name
-export CLOVER_PKG_NAME=$(echo -n ${TRAVIS_BUILD_DIR}/Clover_*.pkg)
+export CLOVER_PKG_NAME=$(echo -n ${BITRISE_DEPLOY_DIR}/Clover_*.pkg)
 export CLOVER_PKG_NAME=$(basename ${CLOVER_PKG_NAME})
 export CLOVER_PKG_NAME=$(echo -n ${CLOVER_PKG_NAME/.pkg/})
 export GIT_TAG=$(echo -n ${CLOVER_PKG_NAME/Clover_/})
 
 # Get the commit message for the tag/revision
-export CLOVER_REVISION=$(cd $HOME/src/edk2/Clover && svn info | grep 'Revision: ' | tr -d 'Revision: ')
+export CLOVER_REVISION=$(cd $HOME/src/UDK2018/Clover && svn info | grep 'Revision: ' | tr -d 'Revision: ')
 export CLOVER_COMMIT_XML=$(svn log svn://svn.code.sf.net/p/cloverefiboot/code --revision $CLOVER_REVISION --xml)
 export CLOVER_COMMIT_MSG=$(echo $CLOVER_COMMIT_XML | xmllint --xpath "string(//msg)" -)
 export CLOVER_COMMIT_AUTHOR=$(echo $CLOVER_COMMIT_XML | xmllint --xpath "string(//author)" -)

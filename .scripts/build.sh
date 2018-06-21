@@ -1,33 +1,74 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+## TODO: Implement a custom exit handler/signal trap with appropriate logic
 
 # Setup error handling
-set -e
-set -o pipefail
+set -o errexit   # Exit when a command fails (set -e)
+set -o nounset   # Exit when using undeclared variables (set -u)
+set -o pipefail  # Exit when piping fails
+set -o xtrace    # Enable debugging (set -x)
 
-# Enable debugging
-set -x
+## TODO: Create a custom logger (with timestamps and logging everything to a log file + to the screen)
 
-# Use our own fork for additional drivers (ours are usually much more up to date)
-sed -i '' -e "s/Micky1979\/Build_Clover\/raw\/work\/Files/Dids\/Build_Clover\/raw\/work\/Files/g" "${TRAVIS_BUILD_DIR}/Build_Clover.command"
 
-## TODO: This is a temporary hack to fix the mtoc compatibility issues in Build_Clover/Clover/AptioFixPkg
-#MTOC_URL=https://github.com/acidanthera/ApfsSupportPkg/raw/master/External/mtoc-mac64.zip
-#MTOC_PATH="${HOME}/src/opt/local/bin"
-#mkdir -p "${MTOC_PATH}"
-#curl -sSLk $MTOC_URL > "/tmp/mtoc.NEW.zip"
-#unzip -qo "/tmp/mtoc.NEW.zip" -d "${MTOC_PATH}/"
-#chmod +x "${MTOC_PATH}/mtoc.NEW"
+# Make sure the working directory exists and switch to it
+mkdir -p ~/src
+cd ~/src
 
-# Build Clover and create the initial package
-bash -x "${TRAVIS_BUILD_DIR}/Build_Clover.command"
+# Install or update UDK2018
+UDK2018_REPO="https://github.com/tianocore/edk2"
+UDK2018_BRANCH="UDK2018"
+UDK2018_PATH="~/src/UDK2018"
+if [ ! -d "${UDK2018_PATH}/.git" ]; then
+  echo "Checking out a fresh copy of UDK2018.."
+  git clone "${UDK2018_REPO}" -b "${UDK2018_BRANCH}" --depth 1 "${UDK2018_PATH}"
+fi
+echo "Checking for updates to UDK2018.."
+cd "${UDK2018_PATH}"
+git pull
 
-# Append myself to the credits
+# Install or update Clover
+CLOVER_REPO="https://svn.code.sf.net/p/cloverefiboot/code"
+CLOVER_PATH="~/src/UDK2018/Clover"
+if [ ! -d "${CLOVER_PATH}/.git" ]; then
+  echo "Checking out a fresh copy of Clover.."
+  svn co "${CLOVER_REPO}" "${CLOVER_PATH}"
+fi
+echo "Checking for updates to Clover.."
+cd "${CLOVER_PATH}"
+svn up -r${CLOVER_REVISION:-HEAD}
+
+# Switch back to the UDK root
+cd "${UDK2018_PATH}"
+
+# Compile the base tools
+make -C BaseTools/Source/C
+
+# Setup UDK
+. edksetup.sh
+
+# Switch to the Clover root
+cd "${CLOVER_PATH}"
+
+# Build gettext, mtoc and nasm
+./buildgettext.sh
+./buildmtoc.sh
+./buildnasm.sh
+
+# Install UDK patches
+cp -R Patches_for_UDK2018/* ../
+
+# Build Clover (clean & build)
+./ebuild.sh clean
+./ebuild.sh -fr
+
+# Modify the package credits
 CREDITS_ORIGINAL="Chameleon team, crazybirdy, JrCs."
 CREDITS_MODIFIED="Chameleon team, crazybirdy, JrCs, Dids."
 sed -i '' -e "s/.*${CREDITS_ORIGINAL}.*/${CREDITS_MODIFIED}/" "${HOME}/src/edk2/Clover/CloverPackage/CREDITS"
 
 # Switch to the EFI driver folder
-cd "${HOME}/src/edk2/Clover/CloverPackage/CloverV2/drivers-Off"
+cd "${CLOVER_PATH}/CloverPackage/CloverV2/drivers-Off"
 
 # Integrate the ApfsSupportPkg, which replaces the need for a separate apfs.efi file
 if [ ! -e "$(pwd)/drivers64UEFI/APFSDriverLoader.efi" ]; then
@@ -56,7 +97,9 @@ else
   echo "Skipping AptioFixPkg, already exists.."
 fi
 
-## TODO: Remove this completely and disable APFS building in Build_Clover?
+## TODO: Download EFI drivers (apfs.efi, ntfs.efi, hfsplus.efi)
+
+
 # Create patched APFS EFI drivers
 ls drivers64/
 ls drivers64UEFI/
@@ -65,20 +108,21 @@ cp -f drivers64UEFI/apfs.efi drivers64UEFI/apfs_patched.efi
 perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' drivers64/apfs_patched-64.efi
 perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' drivers64UEFI/apfs_patched.efi
 
+## FIXME: Check which ones are actually missing and add them back one by one
 # Add missing descriptions
-cd ${HOME}/src/edk2/Clover/CloverPackage/package/Resources/templates
-echo '"OsxAptioFix2Drv-64_description" = "64bit driver to fix Memory problems on UEFI firmware such as AMI Aptio.";' >> Localizable.strings
-echo '"HFSPlus_description" = "Adds support for HFS+ partitions.";' >> Localizable.strings
-echo '"Fat-64_description" = "Adds support for exFAT (FAT64) partitions.";' >> Localizable.strings
-echo '"NTFS_description" = "Adds support for NTFS partitions.";' >> Localizable.strings
-echo '"apfs_description" = "OBSOLETE: Use APFSDriverLoader instead!\n\nAdds support for APFS partitions.";' >> Localizable.strings
-echo '"apfs_patched_description" = "OBSOLETE: Use APFSDriverLoader instead!\n\nAdds support for APFS partitions.\nPatched version which removes verbose logging on startup.\n\nWARNING: Do NOT enable multiple apfs.efi drivers!";' >> Localizable.strings
+#cd "${CLOVER_PATH}/CloverPackage/package/Resources/templates"
+#echo '"OsxAptioFix2Drv-64_description" = "64bit driver to fix Memory problems on UEFI firmware such as AMI Aptio.";' >> Localizable.strings
+#echo '"HFSPlus_description" = "Adds support for HFS+ partitions.";' >> Localizable.strings
+#echo '"Fat-64_description" = "Adds support for exFAT (FAT64) partitions.";' >> Localizable.strings
+#echo '"NTFS_description" = "Adds support for NTFS partitions.";' >> Localizable.strings
+#echo '"apfs_description" = "OBSOLETE: Use APFSDriverLoader instead!\n\nAdds support for APFS partitions.";' >> Localizable.strings
+#echo '"apfs_patched_description" = "OBSOLETE: Use APFSDriverLoader instead!\n\nAdds support for APFS partitions.\nPatched version which removes verbose logging on startup.\n\nWARNING: Do NOT enable multiple apfs.efi drivers!";' >> Localizable.strings
 #echo '"APFSDriverLoader_description" = "Loads apfs.efi from ApfsContainer located on block device.\n\nWARNING: This replaces the separate apfs.efi driver.";' >> Localizable.strings
 #echo '"AptioMemoryFix_description" = "Fork of the original OsxAptioFix2 driver with a cleaner (yet still terrible) codebase and improved stability and functionality.\n\nWARNING: Do NOT use in combination with older AptioFix drivers.\nThis is an experimental driver by vit9696 (https://github.com/vit9696/AptioFixPkg).";' >> Localizable.strings
 #echo '"AptioInputFix_description" = "Reference driver to shim AMI APTIO proprietary mouse & keyboard protocols for File Vault 2 GUI input support.\n\nWARNING: Do NOT use in combination with older AptioFix drivers.\nThis is an experimental driver by vit9696 (https://github.com/vit9696/AptioFixPkg).";' >> Localizable.strings
-echo '"OsxAptioFix3Drv-64_description" = "64bit driver to fix Memory problems on UEFI firmware such as AMI Aptio.";' >> Localizable.strings
-echo '"OsxFatBinaryDrv-64_description" = "Enables starting of FAT modules like boot.efi.";' >> Localizable.strings
+#echo '"OsxAptioFix3Drv-64_description" = "64bit driver to fix Memory problems on UEFI firmware such as AMI Aptio.";' >> Localizable.strings
+#echo '"OsxFatBinaryDrv-64_description" = "Enables starting of FAT modules like boot.efi.";' >> Localizable.strings
 
-# Recreate the package
-cd "${HOME}/src/edk2/Clover/CloverPackage"
-make pkg
+# Build the Clover installer package
+cd "${CLOVER_PATH}/CloverPackage"
+./makepkg
