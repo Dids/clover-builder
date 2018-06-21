@@ -117,11 +117,16 @@ if [ ! -e "$(pwd)/drivers64UEFI/APFSDriverLoader.efi" ]; then
   APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
   curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
     unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
-    cp -f /tmp/ApfsSupportPkg/RELEASE/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
-    cp -f /tmp/ApfsSupportPkg/RELEASE/*.efi drivers64UEFI/ && \
+    cp -f /tmp/ApfsSupportPkg/Drivers/APFSDriverLoader.efi drivers64/APFSDriverLoader-64.efi && \
+    cp -f /tmp/ApfsSupportPkg/Drivers/*.efi drivers64UEFI/ && \
     rm -fr /tmp/ApfsSupportPkg
+    if [ ! -e "$(pwd)/drivers64UEFI/APFSDriverLoader.efi" ]; then
+      timestamp echo "Failed to install ApfsSupportPkg.."
+      error
+      exit 1
+    fi
 else
-  timestamp echo "Skipping ApfsSupportPkg, already exists.."
+  timestamp echo "Skipping ApfsSupportPkg, already exists!"
 fi
 
 # Integrate the AptioFixPkg, which fixes issues with NVRAM
@@ -132,14 +137,19 @@ if [ ! -e "$(pwd)/drivers64UEFI/AptioMemoryFix.efi" ]; then
     unzip /tmp/AptioFixPkg.zip -d /tmp/AptioFixPkg && \
     cp -f /tmp/AptioFixPkg/Drivers/AptioInputFix.efi drivers64/AptioInputFix-64.efi && \
     cp -f /tmp/AptioFixPkg/Drivers/AptioMemoryFix.efi drivers64/AptioMemoryFix-64.efi && \
-    cp -f /tmp/AptioFixPkg/RELEASE/*.efi drivers64UEFI/ && \
+    cp -f /tmp/AptioFixPkg/Drivers/*.efi drivers64UEFI/ && \
     rm -fr /tmp/AptioFixPkg
+    if [ ! -e "$(pwd)/drivers64UEFI/AptioMemoryFix.efi" ]; then
+      timestamp echo "Failed to install AptioFixPkg.."
+      error
+      exit 1
+    fi
 else
-  timestamp echo "Skipping AptioFixPkg, already exists.."
+  timestamp echo "Skipping AptioFixPkg, already exists!"
 fi
 
 # Download extra EFI drivers (apfs.efi, ntfs.efi, hfsplus.efi)
-timestamp echo "Downloading extra EFI drivers.."
+timestamp echo "Downloading additional EFI drivers.."
 curl -sSLk https://github.com/Micky1979/Build_Clover/raw/work/Files/apfs.efi > drivers64UEFI/apfs.efi
 curl -sSLk https://github.com/Micky1979/Build_Clover/raw/work/Files/NTFS.efi > drivers64UEFI/NTFS.efi
 curl -sSLk https://github.com/Micky1979/Build_Clover/raw/work/Files/HFSPlus_x64.efi > drivers64UEFI/HFSPlus.efi
@@ -153,7 +163,7 @@ cp -f drivers64UEFI/HFSPlus.efi drivers64/HFSPlus-64.efi
 
 ## TODO: Refactor this?
 # Create patched APFS EFI drivers
-timestamp echo "Creating patched apfs.efi drivers.."
+timestamp echo "Patching apfs.efi driver.."
 cp -f drivers64/apfs-64.efi drivers64/apfs_patched-64.efi
 cp -f drivers64UEFI/apfs.efi drivers64UEFI/apfs_patched.efi
 perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' drivers64/apfs_patched-64.efi
