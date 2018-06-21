@@ -144,7 +144,7 @@ if [ ! -f "${CLOVER_EFI_PATH}/drivers64UEFI/APFSDriverLoader.efi" ]; then
   timestamp echo "Adding ApfsSupportPkg.."
   APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
   curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
-    unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg && \
+    unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg || true && \
     cp -f /tmp/ApfsSupportPkg/Drivers/*.efi ${CLOVER_EFI_PATH}/drivers64UEFI/ && \
     cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/APFSDriverLoader.efi ${CLOVER_EFI_PATH}/drivers64/APFSDriverLoader-64.efi && \
     rm -fr /tmp/ApfsSupportPkg
@@ -163,7 +163,7 @@ if [ ! -f "${CLOVER_EFI_PATH}/drivers64UEFI/AptioMemoryFix.efi" ]; then
   timestamp echo "Adding AptioFixPkg.."
   APTIOFIXTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/AptioFixPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
   curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APTIOFIXTPKG_URL > /tmp/AptioFixPkg.zip && \
-    unzip /tmp/AptioFixPkg.zip -d /tmp/AptioFixPkg && \
+    unzip /tmp/AptioFixPkg.zip -d /tmp/AptioFixPkg || true && \
     cp -f /tmp/AptioFixPkg/Drivers/*.efi ${CLOVER_EFI_PATH}/drivers64UEFI/ && \
     cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/AptioInputFix.efi ${CLOVER_EFI_PATH}/drivers64/AptioInputFix-64.efi && \
     cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/AptioMemoryFix.efi ${CLOVER_EFI_PATH}/drivers64/AptioMemoryFix-64.efi && \
