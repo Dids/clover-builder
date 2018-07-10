@@ -79,8 +79,8 @@ if [ ! -d "${UDK2018_PATH}/.git" ]; then
 fi
 timestamp echo "Checking for updates to UDK.."
 cd "${UDK2018_PATH}"
-git pull >> ${LOG_PATH} 2>&1
 git clean -fdx --exclude="Clover/" >> ${LOG_PATH} 2>&1
+git pull >> ${LOG_PATH} 2>&1
 
 # Install or update Clover
 CLOVER_REPO="https://svn.code.sf.net/p/cloverefiboot/code"
@@ -91,9 +91,9 @@ if [ ! -d "${CLOVER_PATH}/.svn" ]; then
 fi
 timestamp echo "Checking for updates to Clover.."
 cd "${CLOVER_PATH}"
-svn up -r${CLOVER_REVISION:-HEAD} >> ${LOG_PATH} 2>&1
 svn revert -R . >> ${LOG_PATH} 2>&1
 svn cleanup --remove-unversioned >> ${LOG_PATH} 2>&1
+svn up -r${CLOVER_REVISION:-HEAD} >> ${LOG_PATH} 2>&1
 
 # Switch back to the UDK root
 cd "${UDK2018_PATH}"
