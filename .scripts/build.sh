@@ -140,6 +140,10 @@ sed -i '' -e "s/.*${CREDITS_ORIGINAL}.*/${CREDITS_MODIFIED}/" "${CLOVER_PATH}/Cl
 timestamp echo "Creating Clover installer.."
 ${CLOVER_PATH}/CloverPackage/makepkg >> ${LOG_PATH} 2>&1
 
+# Build the Clover ISO image
+timestamp echo "Creating Clover ISO.."
+${CLOVER_PATH}/CloverPackage/makeiso >> ${LOG_PATH} 2>&1
+
 # Calculate and show execution time in minutes
 END_TIME=$(date +%s)
 EXEC_TIME=$(( $END_TIME - $START_TIME ))
