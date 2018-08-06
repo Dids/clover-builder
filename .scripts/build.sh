@@ -128,7 +128,14 @@ cp -R ${CLOVER_PATH}/Patches_for_UDK2018/* ../ >> ${LOG_PATH} 2>&1
 timestamp echo "Cleaning Clover.."
 ./ebuild.sh -cleanall >> ${LOG_PATH} 2>&1
 timestamp echo "Building Clover, this may take a while.."
-./ebuild.sh -fr --x64-mcp --ext-co >> ${LOG_PATH} 2>&1
+#./ebuild.sh -fr --x64-mcp --ext-co >> ${LOG_PATH} 2>&1
+./ebuild.sh -fr --x64 --ext-co -D NO_GRUB_DRIVERS_EMBEDDED >> ${LOG_PATH} 2>&1
+./ebuild.sh -fr --x64-mcp --no-usb --ext-co -D NO_GRUB_DRIVERS_EMBEDDED >> ${LOG_PATH} 2>&1
+
+# Download extra EFI drivers (hfsplus.efi)
+timestamp echo "Downloading additional EFI drivers.."
+CLOVER_EFI_PATH="${CLOVER_PATH}/CloverPackage/CloverV2/drivers-Off"
+curl -sSLk https://github.com/Micky1979/Build_Clover/raw/work/Files/HFSPlus_x64.efi > ${CLOVER_EFI_PATH}/drivers64UEFI/HFSPlus.efi
 
 # Modify the package credits to differentiate between
 # the official packges and custom-built ones
