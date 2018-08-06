@@ -124,96 +124,17 @@ if [ ! -f "${SRC}/opt/local/bin/nasm" ]; then timestamp echo "Building nasm, thi
 timestamp echo "Applying UDK patches.."
 cp -R ${CLOVER_PATH}/Patches_for_UDK2018/* ../ >> ${LOG_PATH} 2>&1
 
-# Build Clover (clean & build)
+# Build Clover (clean & build with extras)
 timestamp echo "Cleaning Clover.."
 ./ebuild.sh -cleanall >> ${LOG_PATH} 2>&1
 timestamp echo "Building Clover, this may take a while.."
-./ebuild.sh -fr >> ${LOG_PATH} 2>&1
+./ebuild.sh -fr --x64-mcp --ext-co >> ${LOG_PATH} 2>&1
 
-# Modify the package credits
+# Modify the package credits to differentiate between
+# the official packges and custom-built ones
 CREDITS_ORIGINAL="Chameleon team, crazybirdy, JrCs."
-CREDITS_MODIFIED="Chameleon team, crazybirdy, JrCs, Dids."
+CREDITS_MODIFIED="Chameleon team, crazybirdy, JrCs. Custom package by Dids."
 sed -i '' -e "s/.*${CREDITS_ORIGINAL}.*/${CREDITS_MODIFIED}/" "${CLOVER_PATH}/CloverPackage/CREDITS"
-
-# Set the EFI driver path
-CLOVER_EFI_PATH="${CLOVER_PATH}/CloverPackage/CloverV2/drivers-Off"
-
-## FIXME: The copying to *-64.efi part doesn't work, no idea why
-# Integrate the ApfsSupportPkg, which replaces the need for a separate apfs.efi file
-if [ ! -f "${CLOVER_EFI_PATH}/drivers64UEFI/APFSDriverLoader.efi" ]; then
-  timestamp echo "Adding ApfsSupportPkg.."
-  APFSSUPPORTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/ApfsSupportPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
-  curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APFSSUPPORTPKG_URL > /tmp/ApfsSupportPkg.zip && \
-    unzip /tmp/ApfsSupportPkg.zip -d /tmp/ApfsSupportPkg || true && \
-    cp -f /tmp/ApfsSupportPkg/Drivers/*.efi ${CLOVER_EFI_PATH}/drivers64UEFI/ && \
-    cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/APFSDriverLoader.efi ${CLOVER_EFI_PATH}/drivers64/APFSDriverLoader-64.efi && \
-    rm -fr /tmp/ApfsSupportPkg
-    if [ ! -f "${CLOVER_EFI_PATH}/drivers64UEFI/APFSDriverLoader.efi" ]; then
-      timestamp echo "Failed to install ApfsSupportPkg!"
-      error
-      exit 1
-    fi
-else
-  timestamp echo "Skipping ApfsSupportPkg, already exists!"
-fi
-
-## FIXME: The copying to *-64.efi part doesn't work, no idea why
-# Integrate the AptioFixPkg, which fixes issues with NVRAM
-if [ ! -f "${CLOVER_EFI_PATH}/drivers64UEFI/AptioMemoryFix.efi" ]; then
-  timestamp echo "Adding AptioFixPkg.."
-  APTIOFIXTPKG_URL=$(curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk https://api.github.com/repos/acidanthera/AptioFixPkg/releases/latest | grep "browser_download_url.*zip" | cut -d '"' -f 4)
-  curl -u $GITHUB_USERNAME:$GITHUB_TOKEN -sSLk $APTIOFIXTPKG_URL > /tmp/AptioFixPkg.zip && \
-    unzip /tmp/AptioFixPkg.zip -d /tmp/AptioFixPkg || true && \
-    cp -f /tmp/AptioFixPkg/Drivers/*.efi ${CLOVER_EFI_PATH}/drivers64UEFI/ && \
-    cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/AptioInputFix.efi ${CLOVER_EFI_PATH}/drivers64/AptioInputFix-64.efi && \
-    cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/AptioMemoryFix.efi ${CLOVER_EFI_PATH}/drivers64/AptioMemoryFix-64.efi && \
-    rm -fr /tmp/AptioFixPkg
-    if [ ! -f "${CLOVER_EFI_PATH}/drivers64UEFI/AptioMemoryFix.efi" ]; then
-      timestamp echo "Failed to install AptioFixPkg!"
-      error
-      exit 1
-    fi
-else
-  timestamp echo "Skipping AptioFixPkg, already exists!"
-fi
-
-# Download extra EFI drivers (apfs.efi, ntfs.efi, hfsplus.efi)
-timestamp echo "Downloading additional EFI drivers.."
-curl -sSLk https://github.com/Micky1979/Build_Clover/raw/work/Files/apfs.efi > ${CLOVER_EFI_PATH}/drivers64UEFI/apfs.efi
-curl -sSLk https://github.com/Micky1979/Build_Clover/raw/work/Files/NTFS.efi > ${CLOVER_EFI_PATH}/drivers64UEFI/NTFS.efi
-curl -sSLk https://github.com/Micky1979/Build_Clover/raw/work/Files/HFSPlus_x64.efi > ${CLOVER_EFI_PATH}/drivers64UEFI/HFSPlus.efi
-
-## TODO: What if we just use symlinks instead, or will Clover even work with those?
-
-## TODO: Refactor this?
-cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/apfs.efi ${CLOVER_EFI_PATH}/drivers64/apfs-64.efi
-cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/NTFS.efi ${CLOVER_EFI_PATH}/drivers64/NTFS-64.efi
-cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/HFSPlus.efi ${CLOVER_EFI_PATH}/drivers64/HFSPlus-64.efi
-
-## TODO: Refactor this?
-# Create patched APFS EFI drivers
-timestamp echo "Patching apfs.efi driver.."
-cp -f ${CLOVER_EFI_PATH}/drivers64/apfs-64.efi ${CLOVER_EFI_PATH}/drivers64/apfs_patched-64.efi
-cp -f ${CLOVER_EFI_PATH}/drivers64UEFI/apfs.efi ${CLOVER_EFI_PATH}/drivers64UEFI/apfs_patched.efi
-perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' ${CLOVER_EFI_PATH}/drivers64/apfs_patched-64.efi
-perl -i -pe 's|\x00\x74\x07\xb8\xff\xff|\x00\x90\x90\xb8\xff\xff|sg' ${CLOVER_EFI_PATH}/drivers64UEFI/apfs_patched.efi
-
-# Set the installer resource templates path
-CLOVER_INSTALLER_TEMPLATES="${CLOVER_PATH}/CloverPackage/package/Resources/templates"
-
-## TODO: Refactor or restructure better, so this is more readable and more easily editable/appendable
-## TODO: Add more missing descriptions, which there are still plenty of, unfortunately
-# Add missing descriptions
-timestamp echo "Adding missing Clover EFI driver descriptions.."
-echo '"OsxAptioFix2Drv-64_description" = "64bit driver to fix Memory problems on UEFI firmware such as AMI Aptio.";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
-echo '"HFSPlus_description" = "Adds support for HFS+ partitions.";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
-echo '"Fat-64_description" = "Adds support for exFAT (FAT64) partitions.";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
-echo '"NTFS_description" = "Adds support for NTFS partitions.";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
-echo '"apfs_description" = "OBSOLETE: Use APFSDriverLoader instead!\n\nAdds support for APFS partitions.";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
-echo '"apfs_patched_description" = "OBSOLETE: Use APFSDriverLoader instead!\n\nAdds support for APFS partitions.\nPatched version which removes verbose logging on startup.\n\nWARNING: Do NOT enable multiple apfs.efi drivers!";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
-echo '"AptioInputFix_description" = "Reference driver to shim AMI APTIO proprietary mouse & keyboard protocols for File Vault 2 GUI input support.\n\nWARNING: Do NOT use in combination with older AptioFix drivers.\nThis is an experimental driver by vit9696 (https://github.com/vit9696/AptioFixPkg).";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
-echo '"OsxAptioFix3Drv-64_description" = "64bit driver to fix Memory problems on UEFI firmware such as AMI Aptio.";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
-echo '"OsxFatBinaryDrv-64_description" = "Enables starting of FAT modules like boot.efi.";' >> ${CLOVER_INSTALLER_TEMPLATES}/Localizable.strings
 
 # Build the Clover installer package
 timestamp echo "Creating Clover installer.."

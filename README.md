@@ -2,7 +2,7 @@
 
 # Clover Builder (Automated Clover Builds)
 
-*Show your support for this project by signing up for a [free Bitrise account!](https://app.bitrise.io?referrer=02c20c56fa07adcb)*
+*Show your support for this project by signing up for a [free Bitrise CI account!](https://app.bitrise.io?referrer=02c20c56fa07adcb)*
 
 ```text
        (       )            (                 (   (   (         (
@@ -22,12 +22,6 @@
 ```
 
 A project that provides automated builds for every [Clover](https://clover-wiki.zetam.org) revision.
-
-Note that the following additional drivers are included with each build:
-
-- [AptioFixPkg](https://github.com/vit9696/AptioFixPkg) (includes `AptioInputFix.efi` and `AptioMemoryFix.efi`)
-- [ApfsSupportPkg](https://github.com/acidanthera/ApfsSupportPkg) (includes `ApfsDriverLoader.efi`)
-- [Misc](https://github.com/Micky1979/Build_Clover/tree/work/Files) (includes `HFSPlus.efi`, `NTFS.efi` and `apfs.efi`)
 
 **DISCLAIMER:** These builds are automated and largely untested, so use them at your own discretion.
 
