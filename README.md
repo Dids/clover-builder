@@ -2,28 +2,21 @@
 
 # Clover Builder (Automated Clover Builds)
 
-*Show your support for this project by signing up for a [free Bitrise CI account!](https://app.bitrise.io?referrer=02c20c56fa07adcb)*
-
-```text
-       (       )            (                 (   (   (         (
-   (   )\ ) ( /(            )\ )     (        )\ ))\ ))\ )      )\ )
-   )\ (()/( )\())(   (  (  (()/(   ( )\    ( (()/(()/(()/(  (  (()/(
- (((_) /(_)|(_)\ )\  )\ )\  /(_))  )((_)   )\ /(_))(_))(_)) )\  /(_))
- )\___(_))   ((_|(_)((_|(_)(_))   ((_)_ _ ((_|_))(_))(_))_ ((_)(_))
-((/ __| |   / _ \ \ / /| __| _ \   | _ ) | | |_ _| |  |   \| __| _ \
- | (__| |__| (_) \ V / | _||   /   | _ \ |_| || || |__| |) | _||   /
-  \___|____|\___/ \_/  |___|_|_\   |___/\___/|___|____|___/|___|_|_\
-
-                    _          ____  _   _
-                   | |_ _ _   |    \|_|_| |___
-                   | . | | |  |  |  | | . |_ -|
-                   |___|_  |  |____/|_|___|___|
-                       |___|
-```
+*Show your support for this project by signing up for a [free Bitrise CI account!](https://app.bitrise.io?referrer=02c20c56fa07adcb)* (this directly helps with being able to build this project)
 
 A project that provides automated builds for every [Clover](https://clover-wiki.zetam.org) revision.
 
 **DISCLAIMER:** These builds are automated and largely untested, so use them at your own discretion.
+
+## Usage
+
+Ths project uses [Clobber](https://github.com/Dids/clobber) for building Clover, which you can easily install yourself, as long as you have both [Xcode](https://developer.apple.com/xcode/) and [Homebrew](https://brew.sh/) installed:
+
+> brew tap Dids/brewery  
+> brew install clobber  
+
+Clobber supports a variety of arguments, which you can view by running `clobber -h` or `clobber --help`.  
+If you run `clobber` without any arguments, it'll automatically build the latest Clover revision.
 
 ## Releases
 
