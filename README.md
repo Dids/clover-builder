@@ -1,4 +1,5 @@
-[![Build Status](https://www.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://www.bitrise.io/app/d99a8cc679de9944)
+[![Build Status](https://app.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://app.bitrise.io/app/d99a8cc679de9944)
+[![Downloads](https://img.shields.io/github/downloads/Dids/clover-builder/total.svg)](https://github.com/Dids/clover-builder/releases)
 
 # Clover Builder (Automated Clover Builds)
 
@@ -10,7 +11,7 @@ A project that provides automated builds for every [Clover](https://clover-wiki.
 
 ## Usage
 
-Ths project uses [Clobber](https://github.com/Dids/clobber) for building Clover, which you can easily install yourself, as long as you have both [Xcode](https://developer.apple.com/xcode/) and [Homebrew](https://brew.sh/) installed:
+This project uses [Clobber](https://github.com/Dids/clobber) for building Clover, which you can easily install yourself, as long as you have both [Xcode](https://developer.apple.com/xcode/) and [Homebrew](https://brew.sh/) installed:
 
 > brew tap Dids/brewery  
 > brew install clobber  
@@ -26,4 +27,4 @@ See the [Releases](https://github.com/Dids/clover-builder/releases) tab.
 
 See [LICENSE.md](LICENSE.md).
 
-A big thank you to [Micky1979](https://github.com/Micky1979) for creating [Build_Clover](https://github.com/Micky1979/Build_Clover) (which this project as initially based around on), as well as everyone else involved (Clover developers and contributors included!).
+A big thank you to everyone involved in Clover development.
