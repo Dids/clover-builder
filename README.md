@@ -1,4 +1,5 @@
 [![Build Status](https://www.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://www.bitrise.io/app/d99a8cc679de9944)
+![Downloads](https://img.shields.io/github/downloads/Dids/clover-builder/total.svg)
 
 # Clover Builder (Automated Clover Builds)
 
@@ -10,7 +11,7 @@ A project that provides automated builds for every [Clover](https://clover-wiki.
 
 ## Usage
 
-Ths project uses [Clobber](https://github.com/Dids/clobber) for building Clover, which you can easily install yourself, as long as you have both [Xcode](https://developer.apple.com/xcode/) and [Homebrew](https://brew.sh/) installed:
+This project uses [Clobber](https://github.com/Dids/clobber) for building Clover, which you can easily install yourself, as long as you have both [Xcode](https://developer.apple.com/xcode/) and [Homebrew](https://brew.sh/) installed:
 
 > brew tap Dids/brewery  
 > brew install clobber  
