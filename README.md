@@ -27,4 +27,4 @@ See the [Releases](https://github.com/Dids/clover-builder/releases) tab.
 
 See [LICENSE.md](LICENSE.md).
 
-A big thank you to [Micky1979](https://github.com/Micky1979) for creating [Build_Clover](https://github.com/Micky1979/Build_Clover) (which this project as initially based around on), as well as everyone else involved (Clover developers and contributors included!).
+A big thank you to everyone involved in Clover development.
