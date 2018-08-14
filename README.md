@@ -1,5 +1,5 @@
 [![Build Status](https://app.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://app.bitrise.io/app/d99a8cc679de9944)
-![Downloads](https://img.shields.io/github/downloads/Dids/clover-builder/total.svg)
+[![Downloads](https://img.shields.io/github/downloads/Dids/clover-builder/total.svg)](https://github.com/Dids/clover-builder/releases)
 
 # Clover Builder (Automated Clover Builds)
 
