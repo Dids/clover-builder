@@ -4,11 +4,11 @@ Easy access to automated Clover builds.
 ## Latest Release
 
 #### [{{ site.github.latest_release.name }}]({{ site.github.latest_release.html_url }})
-* {{ site.github.latest_release.body | newline_to_br }}
+```{{ site.github.latest_release.body | strip_newlines }}```
 
 ## Older Releases
 
 | Version | Description |
 | --- | --- |
-{% for release in site.github.releases %}| [{{ release.name }}]({{ release.html_url }}) | ```{{ release.body }}``` |
+{% for release in site.github.releases %}| [{{ release.name }}]({{ release.html_url }}) | ```{{ release.body | strip_newlines }}``` |
 {% endfor %}
