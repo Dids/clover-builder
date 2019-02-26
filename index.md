@@ -5,9 +5,6 @@
 
 ## Older Releases
 
-| Version    | Description                        |
-|------------|------------------------------------|
-
-{% for release in site.github.releases %}
-| [{{ release.name }}]({{ release.html_url }}) | {{ release.body }} |
-{% endfor %}
+| Version | Description |
+| --- | --- |
+{% for release in site.github.releases %}| [{{ release.name }}]({{ release.html_url }}) | {{ release.body }} |{% endfor %}
