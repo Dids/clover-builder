@@ -1,12 +1,14 @@
 # Clover DB
 
-Easy access to automated Clover builds.
-## Latest Release
+Clover DB (or Clover Builder) provides easy access to up-to-date and fully automated Clover builds.
 
-### [{{ site.github.latest_release.name }}]({{ site.github.latest_release.html_url }})
+### Latest
+
+[{{ site.github.latest_release.name }}]({{ site.github.latest_release.html_url }})
+
 ```{{ site.github.latest_release.body | markdownify | strip_html | strip_newlines | strip | xml_escape }}```
 
-## Older Releases
+### Archived
 
 | Version | Description |
 | --- | --- |
