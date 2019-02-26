@@ -10,5 +10,5 @@ Easy access to automated Clover builds.
 
 | Version | Description |
 | --- | --- |
-{% for release in site.github.releases %}{% if release.name == '' or release.html_url == '' %}{% continue %}{% endif %}| [{{ release.name }}]({{ release.html_url }}) | ```{{ release.body | markdownify | strip_html | strip_newlines | strip | xml_escape }}``` |
+{% for release in site.github.releases %}{% if release == undefined or release.name == '' or release.html_url == '' %}{% continue %}{% endif %}| [{{ release.name }}]({{ release.html_url }}) | ```{{ release.body | markdownify | strip_html | strip_newlines | strip | xml_escape }}``` |
 {% endfor %}
