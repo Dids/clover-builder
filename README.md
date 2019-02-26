@@ -1,13 +1,12 @@
-[![Build Status](https://app.bitrise.io/app/d99a8cc679de9944/status.svg?token=4iYU6RsLSXBRMno3j3GnJg&branch=master)](https://app.bitrise.io/app/d99a8cc679de9944)
-[![Downloads](https://img.shields.io/github/downloads/Dids/clover-builder/total.svg)](https://github.com/Dids/clover-builder/releases)
+![Bitrise](https://img.shields.io/bitrise/d99a8cc679de9944/master.svg?label=Build%20Status&style=for-the-badge&token=4iYU6RsLSXBRMno3j3GnJg)
+![GitHub All Releases](https://img.shields.io/github/downloads/Dids/clover-builder/total.svg?style=for-the-badge)
+![GitHub stars](https://img.shields.io/github/stars/Dids/clover-builder.svg?label=Stargazers&style=for-the-badge)
 
-# Clover Builder (Automated Clover Builds)
-
-*Show your support for this project by signing up for a [free Bitrise CI account!](https://app.bitrise.io?referrer=02c20c56fa07adcb)* (this directly helps with being able to build this project)
+# Automated Clover Builds
 
 A project that provides automated builds for every [Clover](https://clover-wiki.zetam.org) revision.
 
-**DISCLAIMER:** These builds are automated and largely untested, so use them at your own discretion.
+**DISCLAIMER:** These builds are automated, unofficial and largely untested, so use them at your own discretion.
 
 ## Usage
 
