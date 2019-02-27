@@ -1,0 +1,14 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/* Hide "View on GitHub" button */
+.project-tagline {
+  display: none;
+}
+
+/* Hide "credits" */
+.site-footer-credits {
+  display: none;
+}

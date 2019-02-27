@@ -1,2 +1,32 @@
-theme: jekyll-theme-cayman
+# Set the base theme
+theme: "jekyll-theme-cayman"
+
+# Misc.
 encoding: "utf-8"
+site.lang: "en-US"
+
+# Setup SEO
+title: "Clover Build Repository"
+description: "Automated Clover Builds"
+url: "https://cloverdb.com"
+author: "Dids"
+twitter:
+  username: "Dids"
+  card: "summary"
+logo: "/assets/logo.png"
+social:
+  name: "Dids"
+  links:
+    - https://twitter.com/Dids
+    - https://github.com/Dids
+lang: "en_US"
+
+# Hide default download buttons
+show_downloads: false
+
+# Setup Google Analytics
+google_analytics: "UA-2387272-36"
+
+# Setup GitHub specific configurations
+github:
+  is_project_page: false # Used with CSS to hide "View on GitHub" button
