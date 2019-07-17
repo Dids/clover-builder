@@ -12,7 +12,7 @@ An always up-to-date repository of the latest [Clover](https://clover-wiki.zetam
 
 ## Previous Releases
 
-{% for release in site.github.releases limit:10 %}- {% if release.name == nil or release.name == empty or release.html_url == nil or release.html_url == empty %}{% continue %}{% endif %} [{{ release.name }}]({{ release.html_url }}){:target="_blank"} -- ```{{ release.body | markdownify | strip_html | strip | xml_escape }}```
+{% for release in site.github.releases limit:site.release_count %}- {% if release.name == nil or release.name == empty or release.html_url == nil or release.html_url == empty %}{% continue %}{% endif %} [{{ release.name }}]({{ release.html_url }}){:target="_blank"} -- ```{{ release.body | markdownify | strip_html | strip | xml_escape }}```
 {% endfor %}
 
 [Show more..](https://github.com/Dids/clover-builder/releases){:target="_blank"}

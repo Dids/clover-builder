@@ -24,6 +24,9 @@ lang: "en_US"
 # Hide default download buttons
 show_downloads: false
 
+# Default number of releases to show
+release_count: 10
+
 # Setup Google Analytics
 google_analytics: "UA-2387272-36"
 
