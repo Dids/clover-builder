@@ -1,0 +1,30 @@
+    <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    {% if page.excerpt %}
+    <meta name="description" content="{{ page.excerpt| strip_html }}" />
+    <meta property="og:description" content="{{ page.excerpt| strip_html }}" />
+    {% elsif page.description %}
+    <meta name="description" content="{{ page.description }}" />
+    <meta property="og:description" content="{{ page.description }}" />
+    {% else %}
+    <meta name="description" content="{{ site.description }}">
+    <meta property="og:description" content="{{ site.description }}" />
+    {% endif %}
+    <meta name="author" content="{{ site.name }}" />
+
+    {% if page.title %}
+    <meta property="og:title" content="{{ page.title }}" />
+    <meta property="twitter:title" content="{{ page.title }}" />
+    {% endif %}
+
+    {% if page.image %}
+    <meta property="og:image" content="{{ site.url }}{{ page.image }}"/>
+    <meta property="twitter:image" content="{{ site.url }}{{ page.image }}"/>
+    {% else %}
+    <meta property="og:image" content="https://avatars0.githubusercontent.com/u/3647841?v=3&s=460"/>
+    <meta property="twitter:image" content="https://avatars0.githubusercontent.com/u/3647841?v=3&s=460"/>
+    {% endif %}
+    <meta property="og:site_name" content="Amit Merchant - Software Engineer"/>
