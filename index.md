@@ -4,7 +4,7 @@ layout: post
 
 # What is this?
 
-An always up-to-date repository of the latest [Clover](https://clover-wiki.zetam.org){:target="_blank"} builds, built automatically with [Clobber](https://github.com/Dids/clobber).
+An always up-to-date repository of the latest [Clover](https://sourceforge.net/p/cloverefiboot/wiki/Home/){:target="_blank"} builds, built automatically with [Clobber](https://github.com/Dids/clobber).
 
 ## Latest Release
 
