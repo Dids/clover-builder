@@ -4,7 +4,7 @@
 
 # Automated Clover Builds
 
-A project that provides automated builds for every [Clover](https://clover-wiki.zetam.org) revision.
+A project that provides automated builds for every [Clover](https://sourceforge.net/p/cloverefiboot/wiki/Home/) revision.
 
 **DISCLAIMER:** These builds are automated, unofficial and largely untested, so use them at your own discretion.
 
